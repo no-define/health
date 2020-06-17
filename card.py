@@ -9,21 +9,20 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 
 chrome_options = Options()
-chrome_options.add_argument("--headless")  # 静默模式
-chrome_options.add_argument('--window-size=1280x800')
-
+# chrome_options.add_argument("--headless")  # 静默模式
+# chrome_options.add_argument('--window-size=1280x800')
 
 config = configparser.RawConfigParser()
 config.read('config.ini', encoding='UTF-8')
 
 
-def login():
+def login(username, password):
     # 登录
     driver.get('http://authserver.jit.edu.cn/authserver/login')
     time.sleep(3)
-    driver.find_element_by_id('username').send_keys(config['login']['username'])
+    driver.find_element_by_id('username').send_keys(username)
     time.sleep(2)
-    driver.find_element_by_id('password').send_keys(config['login']['password'])
+    driver.find_element_by_id('password').send_keys(password)
     time.sleep(2)
     driver.find_element_by_css_selector("#login_form1 > div.form_list_button > input").click()
     time.sleep(3)
@@ -75,5 +74,6 @@ def add_record():
 
 if __name__ == '__main__':
     driver = webdriver.Chrome(options=chrome_options)
-    login()
-    add_record()
+    for u, p in zip(config['login']['username'].split(','), config['login']['password'].split(',')):
+        login(u, p)
+        add_record()
