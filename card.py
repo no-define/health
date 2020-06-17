@@ -9,8 +9,8 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 
 chrome_options = Options()
-# chrome_options.add_argument("--headless")  # 静默模式
-# chrome_options.add_argument('--window-size=1280x800')
+chrome_options.add_argument("--headless")  # 静默模式
+chrome_options.add_argument('--window-size=1280x800')
 
 
 config = configparser.RawConfigParser()
