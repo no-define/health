@@ -9,8 +9,8 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 
 chrome_options = Options()
-chrome_options.add_argument("--headless")  # 静默模式
-chrome_options.add_argument('--window-size=1280x800')
+# chrome_options.add_argument("--headless")  # 静默模式
+# chrome_options.add_argument('--window-size=1280x800')
 
 config = configparser.RawConfigParser()
 config.read('config.ini', encoding='UTF-8')
@@ -70,7 +70,9 @@ def add_record():
     driver.find_element_by_xpath('/html/body/div[11]/div/div[2]/footer/div').click()
     time.sleep(2)
     driver.find_element_by_xpath('/html/body/div[28]/div[1]/div[1]/div[2]/div[2]/a[1]').click()
+    time.sleep(6)
     driver.quit()
+    time.sleep(10)
 
 
 if __name__ == '__main__':
