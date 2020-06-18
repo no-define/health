@@ -34,42 +34,43 @@ def add_record():
     driver.get('http://ehallapp.jit.edu.cn/emapflow/sys/lwReportEpidemic/index.do?amp_sec_version_=1#/newdailyReport')
     time.sleep(2)
     driver.refresh()
-    try:
-        element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '/html/body/main/article/section/div[2]/div[1]'))
-        )
+    time.sleep(10)
 
-        # 新增
-        driver.find_element_by_css_selector(
-            'body > main > article > section > div.bh-mb-16 > div.bh-btn.bh-btn-primary').click()
-        time.sleep(6)
+    # try:
+    #     element = WebDriverWait(driver, 10).until(
+    #         EC.presence_of_element_located((By.XPATH, '/html/body/main/article/section/div[2]/div[1]'))
+    #     )
 
-        # 是否异常
-        driver.find_element_by_xpath(
-            '/html/body/div[11]/div/div[1]/section/div[2]/div/div[2]/div[2]/div[1]/div/div/div[2]').click()
-        time.sleep(2)
-        driver.find_element_by_xpath('/html/body/div[17]/div/div/div/div[2]/div/div[3]').click()
-        time.sleep(2)
+    # 新增
+    driver.find_element_by_css_selector(
+        'body > main > article > section > div.bh-mb-16 > div.bh-btn.bh-btn-primary').click()
+    time.sleep(6)
 
-        # 健康码颜色
-        driver.find_element_by_xpath(
-            '/html/body/div[11]/div/div[1]/section/div[2]/div/div[2]/div[2]/div[5]/div/div/div[2]').click()
-        time.sleep(2)
-        driver.find_element_by_xpath('/html/body/div[20]/div/div/div/div[2]/div/div[2]').click()
-        time.sleep(2)
+    # 是否异常
+    driver.find_element_by_xpath(
+        '/html/body/div[11]/div/div[1]/section/div[2]/div/div[2]/div[2]/div[1]/div/div/div[2]').click()
+    time.sleep(2)
+    driver.find_element_by_xpath('/html/body/div[17]/div/div/div/div[2]/div/div[3]').click()
+    time.sleep(2)
 
-        # 14天是否去过南京以外
-        driver.find_element_by_xpath(
-            '/html/body/div[11]/div/div[1]/section/div[2]/div/div[2]/div[2]/div[6]/div/div/div[2]').click()
-        time.sleep(2)
-        driver.find_element_by_xpath('/html/body/div[21]/div/div/div/div[2]/div/div[3]').click()
-        time.sleep(2)
+    # 健康码颜色
+    driver.find_element_by_xpath(
+        '/html/body/div[11]/div/div[1]/section/div[2]/div/div[2]/div[2]/div[5]/div/div/div[2]').click()
+    time.sleep(2)
+    driver.find_element_by_xpath('/html/body/div[20]/div/div/div/div[2]/div/div[2]').click()
+    time.sleep(2)
 
-        driver.find_element_by_xpath('/html/body/div[11]/div/div[2]/footer/div').click()
-        time.sleep(2)
-        driver.find_element_by_xpath('/html/body/div[28]/div[1]/div[1]/div[2]/div[2]/a[1]').click()
-    finally:
-        driver.quit()
+    # 14天是否去过南京以外
+    driver.find_element_by_xpath(
+        '/html/body/div[11]/div/div[1]/section/div[2]/div/div[2]/div[2]/div[6]/div/div/div[2]').click()
+    time.sleep(2)
+    driver.find_element_by_xpath('/html/body/div[21]/div/div/div/div[2]/div/div[3]').click()
+    time.sleep(2)
+
+    driver.find_element_by_xpath('/html/body/div[11]/div/div[2]/footer/div').click()
+    time.sleep(2)
+    driver.find_element_by_xpath('/html/body/div[28]/div[1]/div[1]/div[2]/div[2]/a[1]').click()
+    driver.quit()
 
 
 if __name__ == '__main__':
