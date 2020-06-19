@@ -35,7 +35,7 @@ def login(username, password):
 
 def add_record():
     global driver
-    wait = WebDriverWait(driver, 60, 0.5)
+    wait = WebDriverWait(driver, 30, 0.5)
     driver.get('http://ehallapp.jit.edu.cn/emapflow/sys/lwReportEpidemic/index.do?amp_sec_version_=1#/newdailyReport')
     time.sleep(2)
     driver.refresh()
@@ -84,7 +84,6 @@ def add_record():
     driver.find_element_by_xpath('/html/body/div[28]/div[1]/div[1]/div[2]/div[2]/a[1]').click()
     logger.info('****** punch card success ****** ')
     time.sleep(6)
-    time.sleep(10)
 
 
 if __name__ == '__main__':
