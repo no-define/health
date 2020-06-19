@@ -1,4 +1,5 @@
 import time
+import logging
 import configparser
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -9,11 +10,15 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 
 chrome_options = Options()
+chrome_options.add_argument("–-incognito")
 # chrome_options.add_argument("--headless")  # 静默模式
 # chrome_options.add_argument('--window-size=1280x800')
 
 config = configparser.RawConfigParser()
 config.read('config.ini', encoding='UTF-8')
+logging.basicConfig(filename='health.log', level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 
 def login(username, password):
@@ -26,30 +31,37 @@ def login(username, password):
     time.sleep(2)
     driver.find_element_by_css_selector("#login_form1 > div.form_list_button > input").click()
     time.sleep(3)
-    wait = WebDriverWait(driver, 10)
 
 
 def add_record():
     global driver
+    wait = WebDriverWait(driver, 60, 0.5)
     driver.get('http://ehallapp.jit.edu.cn/emapflow/sys/lwReportEpidemic/index.do?amp_sec_version_=1#/newdailyReport')
     time.sleep(2)
     driver.refresh()
-    time.sleep(10)
+    time.sleep(3)
 
-    # try:
-    #     element = WebDriverWait(driver, 10).until(
-    #         EC.presence_of_element_located((By.XPATH, '/html/body/main/article/section/div[2]/div[1]'))
-    #     )
+    try:
+        new_add_element = wait.until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, 'body > main > article > section > div.bh-mb-16 > div.bh-btn.bh-btn-primary')))
+        # 新增
+        driver.find_element_by_css_selector(
+            'body > main > article > section > div.bh-mb-16 > div.bh-btn.bh-btn-primary').click()
+        time.sleep(6)
+    except:
+        logger.info('no new add element')
+        return
 
-    # 新增
-    driver.find_element_by_css_selector(
-        'body > main > article > section > div.bh-mb-16 > div.bh-btn.bh-btn-primary').click()
-    time.sleep(6)
-
-    # 是否异常
-    driver.find_element_by_xpath(
-        '/html/body/div[11]/div/div[1]/section/div[2]/div/div[2]/div[2]/div[1]/div/div/div[2]').click()
-    time.sleep(2)
+    try:
+        temp_element = wait.until(EC.presence_of_element_located(
+            (By.XPATH, '/html/body/div[11]/div/div[1]/section/div[2]/div/div[2]/div[2]/div[1]/div/div/div[2]')))
+        # 是否异常
+        driver.find_element_by_xpath(
+            '/html/body/div[11]/div/div[1]/section/div[2]/div/div[2]/div[2]/div[1]/div/div/div[2]').click()
+        time.sleep(2)
+    except:
+        logger.info('no temperature element')
+        return
     driver.find_element_by_xpath('/html/body/div[17]/div/div/div/div[2]/div/div[3]').click()
     time.sleep(2)
 
@@ -70,13 +82,15 @@ def add_record():
     driver.find_element_by_xpath('/html/body/div[11]/div/div[2]/footer/div').click()
     time.sleep(2)
     driver.find_element_by_xpath('/html/body/div[28]/div[1]/div[1]/div[2]/div[2]/a[1]').click()
+    logger.info('****** punch card success ****** ')
     time.sleep(6)
-    driver.quit()
     time.sleep(10)
 
 
 if __name__ == '__main__':
-    driver = webdriver.Chrome(options=chrome_options)
     for u, p in zip(config['login']['username'].split(','), config['login']['password'].split(',')):
+        driver = webdriver.Chrome(options=chrome_options)
+        logger.info('user {0} login'.format(u))
         login(u, p)
         add_record()
+        driver.quit()
